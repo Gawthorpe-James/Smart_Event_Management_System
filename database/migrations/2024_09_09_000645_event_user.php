@@ -7,16 +7,14 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::table('', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('event_id')->constrained();
+        Schema::create('event_user', function (Blueprint $table) {
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('event_id')->constrained('events');
         });
     }
 
     public function down(): void
     {
-        Schema::table('', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('event_user');
     }
 };
