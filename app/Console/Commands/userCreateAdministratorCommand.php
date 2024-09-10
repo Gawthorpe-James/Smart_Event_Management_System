@@ -26,6 +26,11 @@ class userCreateAdministratorCommand extends Command
             $this->error('Email address already exists');
             $email = $this->ask('Enter the email address');
         }
+        //validate email
+        while (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->error('Invalid email address');
+            $email = $this->ask('Enter the email address');
+        }
         $password = $this->secret('Enter the password');
         //confirm password
         $password_confirmation = $this->secret('Confirm the password');
