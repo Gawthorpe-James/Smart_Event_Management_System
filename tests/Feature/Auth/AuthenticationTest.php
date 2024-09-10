@@ -15,7 +15,7 @@ test('users can authenticate using the login screen', function () {
     $user = User::factory()->create();
 
     $component = Volt::test('pages.auth.login')
-        ->set('form.email', $user->email)
+        ->set('form.email_username', $user->email)
         ->set('form.password', 'password');
 
     $component->call('login');
@@ -24,6 +24,21 @@ test('users can authenticate using the login screen', function () {
         ->assertHasNoErrors()
         ->assertRedirect(route('dashboard', absolute: false));
 
+    $this->assertAuthenticated();
+    //logout to avoid session conflicts
+    $component = Volt::test('layout.navigation');
+
+    $component->call('logout');
+
+    //login with username
+    $this->assertGuest();
+    $component = Volt::test('pages.auth.login')
+        ->set('form.email_username', $user->username)
+        ->set('form.password', 'password');
+    $component->call('login');
+    $component
+        ->assertHasNoErrors()
+        ->assertRedirect(route('dashboard', absolute: false));
     $this->assertAuthenticated();
 });
 
