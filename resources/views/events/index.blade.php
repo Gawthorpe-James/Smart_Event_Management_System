@@ -6,6 +6,8 @@
     </x-slot>
 
     <div class="py-12">
-        
+        <x-panel.main>
+
+        </x-panel.main>
     </div>
 </x-app-layout>

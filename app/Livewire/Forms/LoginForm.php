@@ -15,7 +15,7 @@ class LoginForm extends Form
 {
     //validate email or username
     #[Validate('required|string')]
-    public string $email_or_username = '';
+    public string $email_username = '';
     #[Validate('required|string')]
     public string $password = '';
     #[Validate('boolean')]
@@ -30,8 +30,8 @@ class LoginForm extends Form
     {
         $this->ensureIsNotRateLimited();
 
-        $user = User::where('email', $this->email_or_username)
-            ->orWhere('username', $this->email_or_username)
+        $user = User::where('email', $this->email_username)
+            ->orWhere('username', $this->email_username)
             ->first();
 
         if (!$user) {
@@ -64,7 +64,7 @@ class LoginForm extends Form
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'form.email_or_username' => trans('auth.throttle', [
+            'form.email_username' => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -76,6 +76,6 @@ class LoginForm extends Form
      */
     protected function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->email_or_username).'|'.request()->ip());
+        return Str::transliterate(Str::lower($this->email_username).'|'.request()->ip());
     }
 }
